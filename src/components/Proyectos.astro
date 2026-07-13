@@ -2,6 +2,10 @@
 import { SITE, repoUrl } from "../config";
 import ProyectoAnim from "./ProyectoAnim.astro";
 
+// Prefijo del despliegue (ej. "/portafolio" en GitHub Pages) — se antepone
+// solo a las rutas de /public; escribe `img` siempre como "/proyectos/...".
+const base = import.meta.env.BASE_URL.replace(/\/$/, "");
+
 // ============================================================
 // CADA PROYECTO:
 //  - anim: animación de vista previa mientras no hay foto.
@@ -106,7 +110,7 @@ const proyectos = [
 
           {p.img ? (
             <img
-              src={p.img}
+              src={`${base}${p.img}`}
               alt={`Captura del proyecto ${p.nombre}`}
               loading="lazy"
               decoding="async"

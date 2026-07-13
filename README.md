@@ -1,49 +1,45 @@
 # Portafolio — Moises
 
 Portafolio personal construido con **Astro 7** + **Tailwind CSS 4** (plugin `@tailwindcss/vite`).
-Concepto de diseño: *sala de control* — telemetría industrial, señal de energía animada y stack presentado por capas (de la infraestructura a la interfaz).
+Concepto de diseño: *sala de control* — telemetría industrial, osciloscopio animado y stack presentado por capas (del problema a la solución).
+
+Publicado en **https://soric91.github.io/portafolio** con GitHub Pages
+(repo `portafolio`, configurado con `base: "/portafolio"` en `astro.config.mjs`).
 
 ## Requisitos
 
 - Node.js **22+**
-- npm (o pnpm)
+- npm
 
-## Puesta en marcha
+## Desarrollo local
 
 ```bash
 npm install
 npm run dev        # http://localhost:4321
 ```
 
-## Antes de publicar
+## Personalización
 
-1. **Edita `src/config.ts`** — nombre, WhatsApp, email, GitHub. Todo el sitio se alimenta de ese archivo.
-2. Cambia `site` en `astro.config.mjs` por tu dominio real.
-3. Ajusta proyectos/servicios en `src/components/Proyectos.astro` y `Servicios.astro` (son arrays al inicio de cada archivo).
+1. **`src/config.ts`** — nombre, marca, WhatsApp, email, GitHub, LinkedIn. Todo el sitio se alimenta de ese archivo.
+2. **`src/components/Proyectos.astro`** — array de proyectos: descripción, stack, animación de vista previa (`anim`), captura real (`img`), repositorio (`repo`) y demo.
+3. **`src/components/Servicios.astro`** y **`SobreMi.astro`** — servicios y niveles de habilidades (arrays al inicio de cada archivo).
+4. Capturas de proyectos: van en `public/proyectos/` (ver el README de esa carpeta).
 
-## Build de producción
+## Despliegue (GitHub Pages)
+
+Automático: cada `git push` a `main` dispara el workflow
+`.github/workflows/deploy.yml`, que compila el sitio y lo publica.
+No hay que subir `dist/` ni compilar a mano.
+
+Requisito único (una sola vez): en el repo → **Settings → Pages →
+Source: GitHub Actions**.
+
+Para verificar el build localmente antes de un push:
 
 ```bash
 npm run build      # genera /dist (estático)
 npm run preview
 ```
-
-## Despliegue con Docker + Nginx (tu flujo habitual)
-
-```dockerfile
-FROM node:22-alpine AS build
-WORKDIR /app
-COPY package*.json ./
-RUN npm ci
-COPY . .
-RUN npm run build
-
-FROM nginx:alpine
-COPY --from=build /app/dist /usr/share/nginx/html
-EXPOSE 80
-```
-
-Ideal para validar tu Cloudflare Tunnel apuntando al contenedor antes de montar los bots de clientes.
 
 ## Estructura
 
@@ -52,8 +48,20 @@ src/
   config.ts              ← tus datos (edita esto primero)
   styles/global.css      ← tokens de diseño y animaciones
   layouts/Base.astro     ← <head>, fuentes, script de reveal
-  components/            ← Nav, Hero, Servicios, Proyectos, Stack, SobreMi, Contacto
+  components/
+    Nav.astro            ← barra + franja de estado
+    Hero.astro           ← eslogan, CTAs y osciloscopio
+    HeroGaleria.astro    ← mini-pantallas animadas (landing, dashboard, bot, API)
+    Ticker.astro         ← cinta ámbar
+    Servicios.astro
+    Proyectos.astro
+    ProyectoAnim.astro   ← vistas previas animadas de proyectos sin foto
+    Stack.astro
+    SobreMi.astro        ← perfil técnico con barras de habilidades
+    Contacto.astro       ← CTA + footer
   pages/index.astro
+public/proyectos/        ← capturas de los proyectos
+.github/workflows/       ← deploy automático a GitHub Pages
 ```
 
 ## Accesibilidad y calidad

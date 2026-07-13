@@ -3,11 +3,12 @@ import { defineConfig } from "astro/config";
 import tailwindcss from "@tailwindcss/vite";
 
 export default defineConfig({
-  // GitHub Pages: repo llamado "soric91.github.io" → se sirve en la raíz.
-  // Si algún día usas otro nombre de repo (ej. "portafolio"), agrega:
-  //   base: "/portafolio",
-  // y ajusta las rutas absolutas de imágenes (/proyectos/...) y el favicon.
+  // GitHub Pages: repo "portafolio" → la página vive en
+  // https://soric91.github.io/portafolio
+  // Si algún día la mueves a un repo "soric91.github.io" (raíz),
+  // elimina la línea `base`.
   site: "https://soric91.github.io",
+  base: "/portafolio",
   vite: {
     plugins: [tailwindcss()],
   },
