@@ -1,0 +1,68 @@
+---
+import { SITE, whatsappUrl, whatsappDisplay } from "../config";
+---
+
+<section id="contacto" class="mx-auto max-w-6xl px-5 pt-8 pb-24 md:pb-28">
+  <div
+    class="reveal flex flex-col items-center gap-6 rounded-lg border border-amber/35 bg-amber/5 px-6 py-14 text-center md:px-12 md:py-16"
+  >
+    <p class="font-mono text-xs tracking-[0.16em] text-amber">
+      [ 05 / CANAL DIRECTO ]
+    </p>
+    <h2
+      class="display max-w-2xl text-[clamp(32px,4.5vw,52px)] leading-[1.1] [font-stretch:125%]"
+    >
+      ¿Su operación necesita un sistema que sí funcione?
+    </h2>
+    <p class="max-w-lg text-[17px] leading-relaxed text-fog">
+      Cuénteme qué proceso quiere automatizar o medir. Respondo en menos de 24
+      horas, sin intermediarios.
+    </p>
+    <a
+      href={whatsappUrl()}
+      target="_blank"
+      rel="noopener"
+      class="inline-flex items-center gap-2.5 rounded bg-amber px-9 py-4.5 font-mono text-[15px] font-semibold tracking-[0.06em] text-ink transition-colors hover:bg-paper"
+    >
+      ▸ ESCRIBIR POR WHATSAPP
+    </a>
+    <p class="font-mono text-xs tracking-[0.08em] text-fog">
+      {whatsappDisplay()} · REMOTO ·{" "}
+      <a
+        href={`mailto:${SITE.email}`}
+        class="text-teal transition-colors hover:text-amber">{SITE.email}</a
+      >
+    </p>
+  </div>
+</section>
+
+<footer
+  class="border-t border-paper/10 px-5 py-6"
+>
+  <div
+    class="mx-auto flex max-w-6xl flex-col items-center justify-between gap-3 font-mono text-[11px] tracking-[0.1em] text-fog sm:flex-row"
+  >
+    <p>© {new Date().getFullYear()} {SITE.marca}</p>
+    <div class="flex items-center gap-6">
+      <a
+        href={SITE.github}
+        target="_blank"
+        rel="noopener"
+        class="transition-colors hover:text-teal">GITHUB</a
+      >
+      {
+        SITE.linkedin && (
+          <a
+            href={SITE.linkedin}
+            target="_blank"
+            rel="noopener"
+            class="transition-colors hover:text-teal"
+          >
+            LINKEDIN
+          </a>
+        )
+      }
+      <span>PYTHON · FASTAPI · REACT · IOT · IA</span>
+    </div>
+  </div>
+</footer>

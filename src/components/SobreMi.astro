@@ -1,0 +1,151 @@
+---
+// Panel de habilidades — nivel de 0 a 100, se dibuja como
+// una barra segmentada de instrumento. Edita libremente.
+const habilidades = [
+  { area: "BACKEND", detalle: "Python · FastAPI · SQLAlchemy", nivel: 92, accent: "teal" },
+  { area: "DATOS", detalle: "PostgreSQL · Redis · MongoDB", nivel: 85, accent: "teal" },
+  { area: "FRONTEND", detalle: "React · Astro · TypeScript", nivel: 80, accent: "teal" },
+  { area: "DEVOPS", detalle: "Docker · Linux · Nginx · CI/CD", nivel: 82, accent: "amber" },
+  { area: "IOT", detalle: "Modbus · MQTT · Node-RED", nivel: 88, accent: "amber" },
+  { area: "IA", detalle: "LLMs · Agentes · WhatsApp API", nivel: 78, accent: "amber" },
+];
+---
+
+<section id="sobre-mi" class="mx-auto max-w-6xl px-5 py-20 md:py-24">
+  <div class="grid items-start gap-12 md:grid-cols-[1.1fr_1fr]">
+    <div class="flex flex-col gap-5">
+      <p class="tag reveal">[ 04 / OPERADOR ]</p>
+      <h2 class="display reveal text-4xl [font-stretch:122%] md:text-[40px]">
+        Sobre mí
+      </h2>
+
+      <p class="reveal text-lg leading-relaxed text-paper">
+        Soy desarrollador full stack. Vengo del mundo industrial: adquisición
+        de datos de medidores eléctricos por Modbus, telemetría con MQTT y
+        monitoreo energético en planta. Ahí aprendí a construir software que
+        corre 24/7 con datos reales.
+      </p>
+      <p class="reveal leading-relaxed text-fog">
+        Hoy diseño y despliego sistemas completos en remoto para clientes de
+        cualquier zona horaria: APIs en Python y FastAPI, frontends en React y
+        Astro, bases de datos PostgreSQL — todo dockerizado sobre servidores
+        Linux. Mi enfoque es de sala de control: cada sistema que entrego
+        queda monitoreado, documentado y con un canal directo conmigo.
+      </p>
+
+      <dl class="reveal mt-2 grid grid-cols-2 gap-3">
+        <div class="flex flex-col gap-1 rounded border border-paper/10 px-4 py-4">
+          <dd class="order-1 font-mono text-[22px] font-semibold text-amber">&lt;24H</dd>
+          <dt class="order-2 font-mono text-[11px] tracking-[0.1em] text-fog">
+            RESPUESTA DIRECTA
+          </dt>
+        </div>
+        <div class="flex flex-col gap-1 rounded border border-paper/10 px-4 py-4">
+          <dd class="order-1 font-mono text-[22px] font-semibold text-teal">REMOTO</dd>
+          <dt class="order-2 font-mono text-[11px] tracking-[0.1em] text-fog">
+            CUALQUIER ZONA HORARIA
+          </dt>
+        </div>
+      </dl>
+    </div>
+
+    <!-- Panel de habilidades: instrumento de calibración, no una foto -->
+    <div class="reveal overflow-hidden rounded-md border border-teal/20 bg-[#0a0f19]/70 md:mt-[76px]">
+      <div
+        class="flex items-center justify-between border-b border-teal/15 px-4 py-2.5 font-mono text-[11px] tracking-[0.12em] text-fog"
+      >
+        <span>PERFIL TÉCNICO / OPERADOR-01</span>
+        <span class="text-teal">● CALIBRADO</span>
+      </div>
+
+      <ul class="flex flex-col">
+        {
+          habilidades.map((h, i) => (
+            <li
+              class:list={[
+                "flex flex-col gap-2 px-4 py-3.5",
+                i > 0 && "border-t border-paper/5",
+              ]}
+            >
+              <div class="flex items-baseline justify-between gap-3 font-mono">
+                <span
+                  class:list={[
+                    "text-[11px] font-semibold tracking-[0.14em]",
+                    h.accent === "amber" ? "text-amber" : "text-teal",
+                  ]}
+                >
+                  {h.area}
+                </span>
+                <span class="truncate text-[10px] tracking-[0.04em] text-fog">
+                  {h.detalle}
+                </span>
+              </div>
+              <div
+                class="gauge"
+                role="meter"
+                aria-valuemin="0"
+                aria-valuemax="100"
+                aria-valuenow={h.nivel}
+                aria-label={`Nivel en ${h.area.toLowerCase()}`}
+              >
+                <i
+                  class:list={["fill", h.accent === "amber" && "amber"]}
+                  style={`--nivel:${h.nivel}%`}
+                />
+              </div>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </div>
+</section>
+
+<style>
+  /* Barra segmentada estilo instrumento: pista tenue + relleno por nivel */
+  .gauge {
+    position: relative;
+    height: 8px;
+    border-radius: 2px;
+    background: repeating-linear-gradient(
+      90deg,
+      color-mix(in srgb, var(--color-fog) 18%, transparent) 0 8px,
+      transparent 8px 12px
+    );
+    overflow: hidden;
+  }
+
+  .fill {
+    position: absolute;
+    inset: 0;
+    width: var(--nivel);
+    background: repeating-linear-gradient(
+      90deg,
+      var(--color-teal) 0 8px,
+      transparent 8px 12px
+    );
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 1.1s cubic-bezier(0.22, 1, 0.36, 1) 0.25s;
+  }
+
+  .fill.amber {
+    background: repeating-linear-gradient(
+      90deg,
+      var(--color-amber) 0 8px,
+      transparent 8px 12px
+    );
+  }
+
+  /* Se llena cuando el panel entra al viewport (reveal → is-visible) */
+  :global(.reveal.is-visible) .fill {
+    transform: scaleX(1);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .fill {
+      transition: none;
+      transform: scaleX(1);
+    }
+  }
+</style>

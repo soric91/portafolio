@@ -1,0 +1,79 @@
+---
+// Las capas están numeradas porque el orden ES el mensaje:
+// entrego desde la capa 00 (servidor) hasta la 04 (IA sobre todo lo demás).
+const capas = [
+  {
+    code: "CAPA 00",
+    accent: "amber",
+    nombre: "Infraestructura",
+    desc: "Servidores, contenedores y despliegue continuo.",
+    tools: "Docker · Linux · Nginx · Cloudflare",
+  },
+  {
+    code: "CAPA 01",
+    accent: "teal",
+    nombre: "Datos",
+    desc: "Bases de datos y flujos de información confiables.",
+    tools: "PostgreSQL · MongoDB · Redis · MQTT",
+  },
+  {
+    code: "CAPA 02",
+    accent: "teal",
+    nombre: "Backend",
+    desc: "La lógica de negocio: APIs, integraciones, pagos.",
+    tools: "Python · FastAPI · SQLAlchemy · JWT",
+  },
+  {
+    code: "CAPA 03",
+    accent: "teal",
+    nombre: "Interfaz",
+    desc: "Paneles y aplicaciones que su equipo usa a diario.",
+    tools: "React · Astro · TypeScript · PWA",
+  },
+  {
+    code: "CAPA 04",
+    accent: "amber",
+    nombre: "IA",
+    desc: "Modelos que automatizan decisiones y conversaciones.",
+    tools: "LLMs · Agentes · WhatsApp API · MCP",
+  },
+];
+---
+
+<section id="stack" class="mx-auto max-w-6xl px-5 py-20 md:py-24">
+  <p class="tag reveal">[ 03 / STACK ]</p>
+  <h2 class="display reveal mt-3 max-w-2xl text-4xl [font-stretch:122%] md:text-[40px]">
+    Arquitectura por capas
+  </h2>
+
+  <ol class="reveal mt-12 overflow-hidden rounded-md border border-paper/10">
+    {
+      capas.map((c, i) => (
+        <li
+          class:list={[
+            "grid gap-2 bg-panel/50 px-6 py-6 transition-colors hover:bg-panel sm:grid-cols-[140px_1fr_auto] sm:items-center sm:gap-6 md:px-7",
+            i > 0 && "border-t border-paper/10",
+          ]}
+        >
+          <span
+            class:list={[
+              "font-mono text-[13px] font-semibold tracking-[0.1em]",
+              c.accent === "amber" ? "text-amber" : "text-teal",
+            ]}
+          >
+            {c.code}
+          </span>
+          <span class="flex flex-col gap-1">
+            <span class="font-display text-[17px] font-bold [font-stretch:115%]">
+              {c.nombre}
+            </span>
+            <span class="text-sm text-fog">{c.desc}</span>
+          </span>
+          <span class="font-mono text-xs tracking-[0.04em] text-fog sm:text-right">
+            {c.tools}
+          </span>
+        </li>
+      ))
+    }
+  </ol>
+</section>

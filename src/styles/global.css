@@ -1,0 +1,128 @@
+@import "tailwindcss";
+
+/* ============================================================
+   TOKENS — concepto "sala de control"
+   Azul-grafito profundo (no negro), dos acentos semánticos:
+   ámbar = energía/IoT · teal = datos/backend
+   ============================================================ */
+@theme {
+  --color-ink: #0d1420;
+  --color-panel: #131c2b;
+  --color-panel-2: #16213380;
+  --color-line: #223349;
+  --color-fog: #8fa0b5;
+  --color-paper: #e8edf4;
+  --color-amber: #ffb224;
+  --color-teal: #3ecfb8;
+
+  --font-display: "Archivo", system-ui, sans-serif;
+  --font-body: "Archivo", system-ui, sans-serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, "SFMono-Regular", monospace;
+}
+
+/* ---------- base ---------- */
+html {
+  scroll-behavior: smooth;
+  background: var(--color-ink);
+}
+
+body {
+  font-family: var(--font-body);
+  color: var(--color-paper);
+  background: var(--color-ink);
+  /* rejilla técnica sutil en toda la página */
+  background-image:
+    linear-gradient(rgba(62, 207, 184, 0.035) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(62, 207, 184, 0.035) 1px, transparent 1px);
+  background-size: 48px 48px;
+  -webkit-font-smoothing: antialiased;
+}
+
+::selection {
+  background: var(--color-amber);
+  color: var(--color-ink);
+}
+
+/* Display expandido — señalética industrial (Archivo variable, eje wdth) */
+.display {
+  font-family: var(--font-display);
+  font-stretch: 125%;
+  font-weight: 800;
+  letter-spacing: -0.01em;
+  line-height: 1.02;
+  text-wrap: balance;
+}
+
+/* Etiqueta de sección monospace — se usa como "[ 01 / SERVICIOS ]" */
+.tag {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  font-weight: 500;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--color-teal);
+}
+
+/* Relleno rayado para fotos pendientes (proyectos / operador) */
+.stripes {
+  background: repeating-linear-gradient(
+    45deg,
+    rgba(62, 207, 184, 0.05),
+    rgba(62, 207, 184, 0.05) 8px,
+    transparent 8px,
+    transparent 16px
+  );
+}
+
+/* Enlaces con foco visible (teclado) */
+a:focus-visible,
+button:focus-visible {
+  outline: 2px solid var(--color-amber);
+  outline-offset: 3px;
+  border-radius: 2px;
+}
+
+/* ---------- punto de estado parpadeante (hero) ---------- */
+.blink-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 9999px;
+  background: var(--color-teal);
+  animation: blink-dot 1.6s infinite;
+}
+
+@keyframes blink-dot {
+  0%, 60% { opacity: 1; }
+  61%, 100% { opacity: 0.15; }
+}
+
+/* ---------- cinta ticker ---------- */
+.ticker-track {
+  display: inline-flex;
+  animation: ticker-move 28s linear infinite;
+}
+
+@keyframes ticker-move {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+
+/* ---------- reveal al hacer scroll ---------- */
+.reveal {
+  opacity: 0;
+  transform: translateY(18px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+
+.reveal.is-visible {
+  opacity: 1;
+  transform: none;
+}
+
+/* ---------- movimiento reducido ---------- */
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  .blink-dot { animation: none; }
+  .ticker-track { animation: none; }
+  .reveal { opacity: 1; transform: none; transition: none; }
+}

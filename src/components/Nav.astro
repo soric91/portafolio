@@ -1,0 +1,58 @@
+---
+import { SITE } from "../config";
+
+const links = [
+  { href: "#servicios", label: "SERVICIOS" },
+  { href: "#proyectos", label: "PROYECTOS" },
+  { href: "#stack", label: "STACK" },
+];
+---
+
+<header
+  class="sticky top-0 z-50 border-b border-paper/10 bg-ink/90 backdrop-blur-md"
+>
+  <nav
+    class="mx-auto flex max-w-6xl items-center justify-between px-5 py-4"
+    aria-label="Navegación principal"
+  >
+    <a href="#" class="flex items-center gap-3">
+      <span class="h-2.5 w-2.5 rounded-[2px] bg-teal" aria-hidden="true"></span>
+      <span class="font-display text-[15px] font-bold tracking-[0.06em] [font-stretch:118%]">
+        {SITE.marca}
+      </span>
+      <span class="hidden font-mono text-[11px] tracking-[0.08em] text-fog sm:inline">
+        / FULL STACK
+      </span>
+    </a>
+
+    <div class="flex items-center gap-5 font-mono text-xs tracking-[0.1em] sm:gap-7">
+      {
+        links.map((l) => (
+          <a
+            href={l.href}
+            class="hidden text-fog transition-colors hover:text-teal md:inline"
+          >
+            {l.label}
+          </a>
+        ))
+      }
+      <a
+        href="#contacto"
+        class="text-amber transition-colors hover:text-paper"
+      >
+        CONTACTO
+      </a>
+    </div>
+  </nav>
+
+  {
+    SITE.disponible && (
+      <div class="border-t border-paper/5">
+        <p class="mx-auto flex max-w-6xl items-center gap-2.5 px-5 py-2 font-mono text-[11px] tracking-[0.14em] text-teal">
+          <span class="blink-dot" aria-hidden="true" />
+          SISTEMA OPERATIVO · DISPONIBLE PARA NUEVOS PROYECTOS
+        </p>
+      </div>
+    )
+  }
+</header>

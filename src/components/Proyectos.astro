@@ -1,0 +1,175 @@
+---
+import { SITE, repoUrl } from "../config";
+import ProyectoAnim from "./ProyectoAnim.astro";
+
+// ============================================================
+// CADA PROYECTO:
+//  - anim: animación de vista previa mientras no hay foto.
+//          Opciones: "energia" | "chat" | "inventario" | "solar"
+//                    | "catalogo" | "datos"
+//  - img:  ruta de la captura real dentro de /public
+//          (ej. "/proyectos/monitoreo.webp"). Cuando la pongas,
+//          reemplaza a la animación. Guarda las imágenes en
+//          public/proyectos/ (ideal: 1200×675, .webp).
+//  - repo: nombre del repositorio en tu GitHub (se une con SITE.github).
+//          Deja "" si el código es privado y el botón no aparece.
+//  - demo: URL en vivo, opcional.
+// ============================================================
+const proyectos = [
+  {
+    code: "PRJ-01",
+    tipo: "IOT · TIEMPO REAL",
+    nombre: "Monitoreo energético industrial",
+    desc: "Sistema de adquisición de datos de medidores eléctricos por Modbus RTU/TCP, transporte con MQTT y visualización en tiempo real para monitoreo de consumo en planta.",
+    stack: ["Python", "Modbus", "MQTT", "Grafana"],
+    anim: "energia",
+    img: "",
+    repo: "",
+    demo: "",
+  },
+  {
+    code: "PRJ-02",
+    tipo: "IA · AUTOMATIZACIÓN",
+    nombre: "Bot de citas por WhatsApp",
+    desc: "Asistente conversacional para spas y barberías: agenda citas, gestiona servicios y cobra depósitos con QR. FastAPI, Redis para deduplicación y LLM para el diálogo.",
+    stack: ["FastAPI", "WhatsApp API", "Redis", "LLM"],
+    anim: "chat",
+    img: "",
+    repo: "",
+    demo: "",
+  },
+  {
+    code: "PRJ-03",
+    tipo: "SAAS · B2B",
+    nombre: "StockControl — SaaS de inventario",
+    desc: "Plataforma de gestión de inventario industrial para el mercado colombiano: multiusuario, reportes y catálogo de productos por categorías.",
+    stack: ["FastAPI", "PostgreSQL", "React", "Docker"],
+    anim: "inventario",
+    img: "",
+    repo: "",
+    demo: "",
+  },
+  {
+    code: "PRJ-04",
+    tipo: "PWA · CAMPO",
+    nombre: "Reportes de mantenimiento solar",
+    desc: "Plataforma para técnicos fotovoltaicos en campo: PWA offline-first con optimización de imágenes en el navegador, sincronización y panel administrativo.",
+    stack: ["React", "PWA", "IndexedDB", "FastAPI"],
+    anim: "solar",
+    img: "",
+    repo: "",
+    demo: "",
+  },
+  {
+    code: "PRJ-05",
+    tipo: "E-COMMERCE LIGERO",
+    nombre: "Catálogo con pedidos por WhatsApp",
+    desc: "Catálogo web reutilizable para negocios de ropa: carrito con estado global, envío de pedidos y cierre de venta por enlace directo a WhatsApp.",
+    stack: ["Astro", "Tailwind", "React islands"],
+    anim: "catalogo",
+    img: "",
+    repo: "",
+    demo: "",
+  },
+  {
+    code: "PRJ-06",
+    tipo: "DATOS · ANALÍTICA",
+    nombre: "Dashboards y reportes interactivos",
+    desc: "Reportes HTML interactivos y compartibles a partir de Excel/CSV, con análisis automático y gráficas dinámicas para clientes no técnicos.",
+    stack: ["Python", "Plotly", "Flask"],
+    anim: "datos",
+    img: "",
+    repo: "",
+    demo: "",
+  },
+] as const;
+---
+
+<section id="proyectos" class="mx-auto max-w-6xl px-5 py-20 md:py-24">
+  <p class="tag reveal">[ 02 / PROYECTOS ]</p>
+  <h2 class="display reveal mt-3 max-w-2xl text-4xl [font-stretch:122%] md:text-[40px]">
+    Proyectos personales
+  </h2>
+  <p class="reveal mt-5 max-w-xl text-fog">
+    Sistemas que construyo por cuenta propia para resolver problemas reales.
+    El código está en GitHub.
+  </p>
+
+  <div class="mt-12 grid gap-5 md:grid-cols-2 xl:grid-cols-3">
+    {
+      proyectos.map((p) => (
+        <article class="reveal flex flex-col overflow-hidden rounded-md border border-paper/10 bg-panel/60 transition-colors hover:border-amber/50">
+          <header class="flex items-center justify-between border-b border-paper/10 px-5 py-3 font-mono text-[11px] tracking-[0.12em] text-fog">
+            <span>{p.code}</span>
+            <span class="text-teal">{p.tipo}</span>
+          </header>
+
+          {p.img ? (
+            <img
+              src={p.img}
+              alt={`Captura del proyecto ${p.nombre}`}
+              loading="lazy"
+              decoding="async"
+              width="1200"
+              height="675"
+              class="aspect-video w-full border-b border-paper/10 object-cover"
+            />
+          ) : (
+            <ProyectoAnim variant={p.anim} />
+          )}
+
+          <div class="flex flex-1 flex-col gap-3 px-5 pt-5 pb-4">
+            <h3 class="font-display text-[19px] leading-tight font-bold [font-stretch:115%]">
+              {p.nombre}
+            </h3>
+            <p class="flex-1 text-sm leading-relaxed text-fog">{p.desc}</p>
+            <ul class="flex flex-wrap gap-2">
+              {p.stack.map((t) => (
+                <li class="rounded-[3px] border border-teal/30 px-2 py-0.5 font-mono text-[11px] tracking-[0.06em] text-teal">
+                  {t}
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          {(p.repo || p.demo) && (
+            <footer class="flex items-center gap-5 border-t border-paper/10 px-5 py-3 font-mono text-[11px] tracking-[0.12em]">
+              {p.repo && (
+                <a
+                  href={repoUrl(p.repo)}
+                  target="_blank"
+                  rel="noopener"
+                  class="text-teal transition-colors hover:text-amber"
+                >
+                  CÓDIGO ↗
+                </a>
+              )}
+              {p.demo && (
+                <a
+                  href={p.demo}
+                  target="_blank"
+                  rel="noopener"
+                  class="text-amber transition-colors hover:text-paper"
+                >
+                  DEMO ↗
+                </a>
+              )}
+            </footer>
+          )}
+        </article>
+      ))
+    }
+  </div>
+
+  <p class="reveal mt-8 font-mono text-xs tracking-[0.08em] text-fog">
+    MÁS CÓDIGO EN{" "}
+    <a
+      href={SITE.github}
+      target="_blank"
+      rel="noopener"
+      class="text-teal transition-colors hover:text-amber"
+    >
+      GITHUB ↗
+    </a>
+  </p>
+</section>

@@ -1,0 +1,343 @@
+---
+// Galería del hero: cuatro mini-pantallas animadas (CSS puro) que
+// muestran de un vistazo lo que se ofrece — landing pages, dashboards,
+// bots con IA y APIs. Cada una simula una ventana de navegador.
+---
+
+<div class="galeria" aria-hidden="true">
+  <!-- LANDING PAGE -->
+  <div class="ventana v1">
+    <div class="chrome">
+      <span class="dots"><i /><i /><i /></span>
+      <span class="titulo">LANDING PAGE</span>
+    </div>
+    <div class="pantalla landing">
+      <div class="mini-nav">
+        <i class="logo" />
+        <i class="item" />
+        <i class="item" />
+      </div>
+      <div class="titular" />
+      <div class="titular corto" />
+      <span class="cta" />
+      <div class="bloque-img" />
+    </div>
+  </div>
+
+  <!-- DASHBOARD -->
+  <div class="ventana v2">
+    <div class="chrome">
+      <span class="dots"><i /><i /><i /></span>
+      <span class="titulo">DASHBOARD</span>
+    </div>
+    <div class="pantalla dashboard">
+      <div class="kpis">
+        <i /><i /><i />
+      </div>
+      <div class="barras">
+        <span style="--d:0s; --h:55%" />
+        <span style="--d:0.25s; --h:80%" />
+        <span style="--d:0.5s; --h:40%" class="amber" />
+        <span style="--d:0.75s; --h:92%" />
+        <span style="--d:1s; --h:65%" />
+        <span style="--d:1.25s; --h:75%" class="amber" />
+      </div>
+    </div>
+  </div>
+
+  <!-- BOT IA -->
+  <div class="ventana v3">
+    <div class="chrome">
+      <span class="dots"><i /><i /><i /></span>
+      <span class="titulo">BOT · IA</span>
+    </div>
+    <div class="pantalla bot">
+      <span class="msg in" style="--d:0s" />
+      <span class="msg out" style="--d:1.4s" />
+      <span class="msg in corto" style="--d:2.8s" />
+      <span class="escribiendo" style="--d:4s"><i style="--d:0s" /><i style="--d:0.2s" /><i style="--d:0.4s" /></span>
+    </div>
+  </div>
+
+  <!-- API -->
+  <div class="ventana v4">
+    <div class="chrome">
+      <span class="dots"><i /><i /><i /></span>
+      <span class="titulo">API</span>
+    </div>
+    <div class="pantalla api">
+      <p class="linea" style="--d:0s">POST /pedidos <b class="ok">201</b></p>
+      <p class="linea" style="--d:1s">GET /reportes <b class="ok">200</b></p>
+      <p class="linea" style="--d:2s">GET /clientes <b class="ok">200</b></p>
+      <p class="linea cursor" style="--d:3s">▍</p>
+    </div>
+  </div>
+</div>
+
+<style>
+  .galeria {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    width: 100%;
+  }
+
+  .ventana {
+    overflow: hidden;
+    border-radius: 6px;
+    border: 1px solid color-mix(in srgb, var(--color-paper) 12%, transparent);
+    background: #0a0f19;
+    transition: transform 0.3s ease, border-color 0.3s ease;
+  }
+
+  /* leve collage: par de ventanas desfasadas para efecto galería */
+  .v1 { transform: rotate(-1.2deg); }
+  .v2 { transform: rotate(1deg) translateY(10px); }
+  .v3 { transform: rotate(0.8deg); }
+  .v4 { transform: rotate(-1deg) translateY(10px); }
+
+  .ventana:hover {
+    transform: rotate(0deg) translateY(0) scale(1.03);
+    border-color: color-mix(in srgb, var(--color-teal) 50%, transparent);
+    z-index: 1;
+  }
+
+  .chrome {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px 12px;
+    border-bottom: 1px solid color-mix(in srgb, var(--color-paper) 8%, transparent);
+  }
+
+  .dots {
+    display: inline-flex;
+    gap: 5px;
+  }
+
+  .dots i {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: color-mix(in srgb, var(--color-fog) 40%, transparent);
+  }
+
+  .dots i:first-child { background: color-mix(in srgb, var(--color-amber) 70%, transparent); }
+  .dots i:nth-child(2) { background: color-mix(in srgb, var(--color-teal) 60%, transparent); }
+
+  .titulo {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.14em;
+    color: var(--color-fog);
+  }
+
+  .pantalla {
+    aspect-ratio: 6 / 5;
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 9px;
+  }
+
+  /* ---------- landing ---------- */
+  .mini-nav {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    margin-bottom: 2px;
+  }
+
+  .mini-nav .logo {
+    width: 10px;
+    height: 10px;
+    border-radius: 2px;
+    background: var(--color-teal);
+  }
+
+  .mini-nav .item {
+    width: 22px;
+    height: 4px;
+    border-radius: 2px;
+    background: color-mix(in srgb, var(--color-fog) 40%, transparent);
+    margin-left: auto;
+  }
+
+  .mini-nav .item + .item { margin-left: 0; }
+
+  .titular {
+    width: 85%;
+    height: 9px;
+    border-radius: 2px;
+    background: color-mix(in srgb, var(--color-paper) 75%, transparent);
+  }
+
+  .titular.corto { width: 55%; }
+
+  .landing .cta {
+    width: 46px;
+    height: 13px;
+    border-radius: 2px;
+    background: var(--color-amber);
+    animation: latir 2.2s ease-in-out infinite;
+  }
+
+  @keyframes latir {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.55; }
+  }
+
+  .bloque-img {
+    flex: 1;
+    border-radius: 3px;
+    background: linear-gradient(
+      110deg,
+      color-mix(in srgb, var(--color-teal) 12%, transparent) 40%,
+      color-mix(in srgb, var(--color-teal) 26%, transparent) 50%,
+      color-mix(in srgb, var(--color-teal) 12%, transparent) 60%
+    );
+    background-size: 200% 100%;
+    animation: brillo 3s linear infinite;
+  }
+
+  @keyframes brillo {
+    from { background-position: 120% 0; }
+    to { background-position: -80% 0; }
+  }
+
+  /* ---------- dashboard ---------- */
+  .kpis {
+    display: flex;
+    gap: 6px;
+  }
+
+  .kpis i {
+    flex: 1;
+    height: 18px;
+    border-radius: 3px;
+    border: 1px solid color-mix(in srgb, var(--color-fog) 25%, transparent);
+    background: color-mix(in srgb, var(--color-panel) 80%, transparent);
+  }
+
+  .barras {
+    flex: 1;
+    display: flex;
+    align-items: flex-end;
+    gap: 7px;
+    border-bottom: 1px solid color-mix(in srgb, var(--color-fog) 30%, transparent);
+    padding: 0 3px;
+  }
+
+  .barras span {
+    flex: 1;
+    height: var(--h);
+    border-radius: 2px 2px 0 0;
+    background: color-mix(in srgb, var(--color-teal) 70%, transparent);
+    transform-origin: bottom;
+    animation: medir 2.6s ease-in-out var(--d) infinite;
+  }
+
+  .barras span.amber {
+    background: color-mix(in srgb, var(--color-amber) 75%, transparent);
+  }
+
+  @keyframes medir {
+    0%, 100% { transform: scaleY(0.5); }
+    50% { transform: scaleY(1); }
+  }
+
+  /* ---------- bot ---------- */
+  .bot { justify-content: center; }
+
+  .msg {
+    width: 62%;
+    height: 15px;
+    border-radius: 6px;
+    border-bottom-left-radius: 2px;
+    background: var(--color-panel);
+    border: 1px solid color-mix(in srgb, var(--color-fog) 25%, transparent);
+    opacity: 0;
+    animation: llegar 6s ease var(--d) infinite;
+  }
+
+  .msg.out {
+    align-self: flex-end;
+    border-radius: 6px;
+    border-bottom-right-radius: 2px;
+    border-color: color-mix(in srgb, var(--color-teal) 45%, transparent);
+    background: color-mix(in srgb, var(--color-teal) 12%, transparent);
+  }
+
+  .msg.corto { width: 45%; }
+
+  .escribiendo {
+    display: inline-flex;
+    gap: 3px;
+    width: max-content;
+    padding: 5px 8px;
+    border-radius: 6px;
+    border-bottom-left-radius: 2px;
+    background: var(--color-panel);
+    border: 1px solid color-mix(in srgb, var(--color-fog) 25%, transparent);
+    opacity: 0;
+    animation: llegar 6s ease var(--d) infinite;
+  }
+
+  .escribiendo i {
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    background: var(--color-fog);
+    animation: teclear 1s ease var(--d) infinite;
+  }
+
+  @keyframes llegar {
+    0%, 6% { opacity: 0; transform: translateY(5px); }
+    14%, 84% { opacity: 1; transform: none; }
+    94%, 100% { opacity: 0; }
+  }
+
+  @keyframes teclear {
+    0%, 100% { opacity: 0.25; }
+    50% { opacity: 1; }
+  }
+
+  /* ---------- api ---------- */
+  .api { justify-content: center; gap: 8px; }
+
+  .linea {
+    margin: 0;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.04em;
+    color: var(--color-fog);
+    opacity: 0;
+    animation: aparecer 5s ease var(--d) infinite;
+  }
+
+  .linea .ok {
+    color: var(--color-teal);
+    font-weight: 600;
+  }
+
+  .linea.cursor {
+    color: var(--color-amber);
+    animation: aparecer 5s ease var(--d) infinite, teclear 0.9s step-end infinite;
+  }
+
+  @keyframes aparecer {
+    0%, 5% { opacity: 0; }
+    12%, 88% { opacity: 1; }
+    96%, 100% { opacity: 0; }
+  }
+
+  /* ---------- movimiento reducido: todo visible y quieto ---------- */
+  @media (prefers-reduced-motion: reduce) {
+    .landing .cta { animation: none; }
+    .bloque-img { animation: none; }
+    .barras span { animation: none; }
+    .msg, .escribiendo, .linea { animation: none; opacity: 1; }
+    .escribiendo i { animation: none; opacity: 0.6; }
+    .ventana, .ventana:hover { transition: none; }
+  }
+</style>

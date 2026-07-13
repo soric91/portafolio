@@ -1,0 +1,68 @@
+---
+const servicios = [
+  {
+    code: "SRV-01 / BACKEND",
+    accent: "teal",
+    titulo: "APIs y sistemas a la medida",
+    desc: "Backends en Python y FastAPI que conectan su inventario, ventas y facturación. Rápidos, documentados y listos para crecer con su negocio.",
+  },
+  {
+    code: "SRV-02 / IA + WHATSAPP",
+    accent: "amber",
+    titulo: "Automatización con IA",
+    desc: "Bots de WhatsApp que atienden clientes, agendan citas y responden pedidos 24/7 — sin contratar más personal de turno.",
+  },
+  {
+    code: "SRV-03 / SAAS",
+    accent: "teal",
+    titulo: "Productos SaaS completos",
+    desc: "De la idea al producto en producción: base de datos, API, panel web y despliegue. Un solo responsable de punta a punta.",
+  },
+  {
+    code: "SRV-04 / IOT + ENERGÍA",
+    accent: "amber",
+    titulo: "IoT y monitoreo energético",
+    desc: "Sensores conectados que miden consumo eléctrico y variables de planta en tiempo real. Datos en su tablero, alertas en su celular.",
+  },
+  {
+    code: "SRV-05 / WEB",
+    accent: "teal",
+    titulo: "Landing pages y sitios web",
+    desc: "Páginas rápidas que convierten visitas en clientes: para campañas, catálogos o presencia de marca, con analítica desde el día uno.",
+  },
+  {
+    code: "SRV-06 / DATOS",
+    accent: "amber",
+    titulo: "Dashboards y reportes",
+    desc: "Sus Excel dispersos convertidos en tableros con gráficas de ventas e inventario actualizados a diario, listos para tomar decisiones.",
+  },
+];
+---
+
+<section id="servicios" class="mx-auto max-w-6xl px-5 py-20 md:py-24">
+  <p class="tag reveal">[ 01 / SERVICIOS ]</p>
+  <h2 class="display reveal mt-3 max-w-2xl text-4xl [font-stretch:122%] md:text-[40px]">
+    Qué puedo construir para su empresa
+  </h2>
+
+  <div class="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+    {
+      servicios.map((s) => (
+        <article class="reveal flex flex-col gap-3.5 rounded-md border border-paper/10 bg-panel/60 p-7 transition-colors hover:border-teal/50 hover:bg-panel/90">
+          <p
+            class:list={[
+              "font-mono text-[11px] tracking-[0.14em]",
+              s.accent === "amber" ? "text-amber" : "text-teal",
+            ]}
+          >
+            {s.code}
+          </p>
+          <h3 class="font-display text-xl leading-tight font-bold [font-stretch:115%]">
+            {s.titulo}
+          </h3>
+          <p class="text-[15px] leading-relaxed text-fog">{s.desc}</p>
+        </article>
+      ))
+    }
+  </div>
+</section>
