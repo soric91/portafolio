@@ -11,10 +11,10 @@ import HeroGaleria from "./HeroGaleria.astro";
       </h1>
 
       <p class="mt-7 max-w-xl text-xl leading-relaxed text-fog">
-        Su negocio tiene procesos lentos, datos dispersos o tareas que se
-        hacen a mano. Yo los convierto en plataformas web, APIs,
-        automatización con IA y tableros en tiempo real: menos trabajo
-        manual, menos errores, más control.
+        Construyo software que corre todos los días en operaciones reales:
+        monitoreo energético desde el medidor hasta la factura, inventario
+        para droguerías que lee facturas de la DIAN, y automatización con IA
+        y visión artificial. Del firmware al panel, un solo responsable.
       </p>
 
       <div class="mt-10 flex flex-wrap gap-4">
@@ -33,6 +33,23 @@ import HeroGaleria from "./HeroGaleria.astro";
           VER PROYECTOS
         </a>
       </div>
+
+      <dl class="mt-10 grid max-w-xl grid-cols-3 border-t border-paper/10 pt-6">
+        {
+          [
+            { v: "15+", t: "SISTEMAS CONSTRUIDOS" },
+            { v: "+2.000", t: "PRUEBAS AUTOMATIZADAS" },
+            { v: "24/7", t: "EN CAMPO Y EN PLANTA" },
+          ].map((m, i) => (
+            <div class:list={["flex flex-col gap-1", i > 0 && "border-l border-paper/10 pl-4 sm:pl-6"]}>
+              <dd class="order-1 font-display text-2xl font-extrabold [font-stretch:120%] text-paper sm:text-3xl">
+                {m.v}
+              </dd>
+              <dt class="order-2 font-mono text-[10px] leading-snug tracking-[0.12em] text-fog">{m.t}</dt>
+            </div>
+          ))
+        }
+      </dl>
     </div>
 
     <!-- Galería: lo que se entrega, de un vistazo -->

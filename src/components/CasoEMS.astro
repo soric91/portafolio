@@ -1,0 +1,254 @@
+---
+import { repoUrl } from "../config";
+
+// Caso destacado: la plataforma EMS completa, del medidor al cliente.
+const base = import.meta.env.BASE_URL.replace(/\/$/, "");
+
+const capturas = [
+  { id: "dashboard", label: "PANEL EN VIVO", src: "/proyectos/ems-01-dashboard.webp", alt: "Panel de EMS Monitor: potencia en vivo, balance con la red y costo del día y del mes" },
+  { id: "analytics", label: "ANALÍTICA", src: "/proyectos/ems-04-analytics.webp", alt: "Analítica de EMS Monitor: perfil horario de consumo y exportación solar, y oportunidad de ahorro" },
+];
+
+const flujo = [
+  { code: "01", nombre: "Medidor", detalle: "Modbus RTU / TCP", accent: "amber" },
+  { code: "02", nombre: "GatewayEMS", detalle: "Firmware en campo · InfluxDB local", accent: "teal", repo: "gatewayEMS" },
+  { code: "03", nombre: "MQTT", detalle: "Un topic por equipo", accent: "amber" },
+  { code: "04", nombre: "ApiEMS", detalle: "Ingesta, histórico, costos", accent: "teal", repo: "ApiEMS" },
+  { code: "05", nombre: "EMS Monitor", detalle: "Panel del cliente", accent: "teal", repo: "EMSMonitor" },
+];
+
+const control = [
+  { nombre: "CRMweb", detalle: "Panel del operador", repo: "CRMControl" },
+  { nombre: "CRMBackend", detalle: "Clientes, flota, tarifas, roles", repo: "CRMBackend" },
+];
+
+const metricas = [
+  { valor: "5", unidad: "REPOS", texto: "firmware, dos APIs y dos paneles" },
+  { valor: "+2.000", unidad: "PRUEBAS", texto: "automatizadas entre los cinco servicios" },
+  { valor: "90%", unidad: "COBERTURA", texto: "en el firmware que corre en campo" },
+  { valor: "0", unidad: "REINICIOS", texto: "para aplicar configuración remota" },
+];
+---
+
+<section id="caso" class="mx-auto max-w-6xl px-5 py-20 md:py-24">
+  <p class="tag reveal">[ 02 / CASO DESTACADO ]</p>
+  <div class="mt-3 grid gap-6 lg:grid-cols-[1.2fr_1fr] lg:items-end">
+    <h2 class="display reveal text-4xl [font-stretch:122%] md:text-[44px]">
+      Plataforma EMS: del medidor<br class="hidden md:inline" /> a la factura del cliente
+    </h2>
+    <p class="reveal text-[17px] leading-relaxed text-fog">
+      Un sistema de monitoreo energético completo, construido por mí de punta a
+      punta: el firmware que lee los medidores en campo, el backend que guarda y
+      analiza cada lectura, el panel que ve el cliente y el CRM con el que el
+      operador administra toda la flota.
+    </p>
+  </div>
+
+  <!-- Capturas reales -->
+  <div class="reveal visor mt-12 overflow-hidden rounded-lg border border-teal/25 bg-[#0a0f19]">
+    <div class="flex flex-wrap items-center justify-between gap-3 border-b border-teal/15 px-4 py-2.5 font-mono text-[11px] tracking-[0.12em] text-fog">
+      <span>EMS MONITOR / CAPTURA REAL</span>
+      <div class="flex gap-1" role="tablist" aria-label="Pantallas de EMS Monitor">
+        {
+          capturas.map((c, i) => (
+            <button
+              type="button"
+              role="tab"
+              id={`tab-${c.id}`}
+              aria-controls={`panel-${c.id}`}
+              aria-selected={i === 0 ? "true" : "false"}
+              tabindex={i === 0 ? 0 : -1}
+              class="tab rounded px-3 py-1.5 tracking-[0.12em] transition-colors"
+              data-tab={c.id}
+            >
+              {c.label}
+            </button>
+          ))
+        }
+      </div>
+    </div>
+    {
+      capturas.map((c, i) => (
+        <div
+          role="tabpanel"
+          id={`panel-${c.id}`}
+          aria-labelledby={`tab-${c.id}`}
+          hidden={i !== 0}
+          data-panel={c.id}
+        >
+          <img
+            src={`${base}${c.src}`}
+            alt={c.alt}
+            width="1600"
+            height="1000"
+            loading="lazy"
+            decoding="async"
+            class="block aspect-[16/10] w-full object-cover object-top"
+          />
+        </div>
+      ))
+    }
+  </div>
+
+  <!-- Flujo de datos -->
+  <div class="reveal mt-10 rounded-lg border border-paper/10 bg-panel/50 p-5 md:p-7">
+    <p class="font-mono text-[11px] tracking-[0.14em] text-fog">FLUJO DE DATOS</p>
+    <ol class="flujo mt-5">
+      {
+        flujo.map((n) => (
+          <li class="nodo">
+            <span
+              class:list={[
+                "font-mono text-[11px] font-semibold tracking-[0.12em]",
+                n.accent === "amber" ? "text-amber" : "text-teal",
+              ]}
+            >
+              {n.code}
+            </span>
+            {n.repo ? (
+              <a
+                href={repoUrl(n.repo)}
+                target="_blank"
+                rel="noopener"
+                class="font-display text-[17px] font-bold [font-stretch:115%] transition-colors hover:text-teal"
+              >
+                {n.nombre} <span class="font-mono text-[11px] text-fog">↗</span>
+              </a>
+            ) : (
+              <span class="font-display text-[17px] font-bold [font-stretch:115%]">{n.nombre}</span>
+            )}
+            <span class="text-[13px] leading-snug text-fog">{n.detalle}</span>
+          </li>
+        ))
+      }
+    </ol>
+
+    <div class="mt-6 flex flex-col gap-3 border-t border-dashed border-paper/15 pt-5 md:flex-row md:items-center md:gap-6">
+      <p class="font-mono text-[11px] tracking-[0.14em] text-amber">PLANO DE CONTROL · configura cada gateway a distancia</p>
+      <ul class="flex flex-wrap gap-3">
+        {
+          control.map((c) => (
+            <li>
+              <a
+                href={repoUrl(c.repo)}
+                target="_blank"
+                rel="noopener"
+                class="flex items-baseline gap-2 rounded border border-paper/10 px-3 py-2 transition-colors hover:border-teal/50"
+              >
+                <span class="font-display text-[15px] font-bold [font-stretch:115%]">{c.nombre}</span>
+                <span class="text-[12px] text-fog">{c.detalle}</span>
+                <span class="font-mono text-[11px] text-teal">↗</span>
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </div>
+
+  <!-- Métricas -->
+  <dl class="reveal mt-5 grid grid-cols-2 gap-px overflow-hidden rounded-lg border border-paper/10 bg-paper/10 lg:grid-cols-4">
+    {
+      metricas.map((m) => (
+        <div class="flex flex-col gap-1 bg-ink px-5 py-5">
+          <dd class="order-1 flex flex-wrap items-baseline gap-x-2">
+            <span class="font-display text-2xl font-extrabold [font-stretch:120%] text-paper sm:text-3xl">{m.valor}</span>
+            <span class="font-mono text-[11px] tracking-[0.12em] text-teal">{m.unidad}</span>
+          </dd>
+          <dt class="order-2 text-[13px] leading-snug text-fog">{m.texto}</dt>
+        </div>
+      ))
+    }
+  </dl>
+
+  <p class="reveal mt-6 max-w-3xl text-[15px] leading-relaxed text-fog">
+    Lo que más me importa del diseño: <span class="text-paper">el equipo en campo nunca deja de medir</span>.
+    Con el broker caído o la red cortada, el gateway sigue leyendo y guardando
+    localmente; al volver el enlace, replica desde su última marca de agua y
+    las horas sin conexión se recuperan completas.
+  </p>
+</section>
+
+<style>
+  .tab {
+    color: var(--color-fog);
+  }
+  .tab[aria-selected="true"] {
+    color: var(--color-ink);
+    background: var(--color-teal);
+  }
+  .tab[aria-selected="false"]:hover {
+    color: var(--color-paper);
+  }
+
+  .visor {
+    box-shadow:
+      0 0 0 1px rgba(62, 207, 184, 0.04),
+      0 30px 80px -30px rgba(62, 207, 184, 0.25);
+  }
+
+  /* flujo: horizontal en escritorio, vertical en móvil, con flechas */
+  .flujo {
+    display: grid;
+    gap: 14px;
+  }
+  .nodo {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    padding: 14px 16px;
+    border-radius: 6px;
+    border: 1px solid color-mix(in srgb, var(--color-paper) 10%, transparent);
+    background: #0a0f19;
+  }
+  .nodo:not(:last-child)::after {
+    content: "↓";
+    position: absolute;
+    left: 50%;
+    bottom: -15px;
+    transform: translateX(-50%);
+    font-family: var(--font-mono);
+    font-size: 12px;
+    color: var(--color-teal);
+  }
+  @media (min-width: 900px) {
+    .flujo {
+      grid-template-columns: repeat(5, 1fr);
+      gap: 22px;
+    }
+    .nodo:not(:last-child)::after {
+      content: "→";
+      left: auto;
+      right: -17px;
+      top: 50%;
+      bottom: auto;
+      transform: translateY(-50%);
+    }
+  }
+</style>
+
+<script>
+  const tabs = Array.from(document.querySelectorAll<HTMLButtonElement>("#caso [data-tab]"));
+  const panels = document.querySelectorAll<HTMLElement>("#caso [data-panel]");
+
+  const activar = (id: string) => {
+    tabs.forEach((t) => {
+      const activo = t.dataset.tab === id;
+      t.setAttribute("aria-selected", String(activo));
+      t.tabIndex = activo ? 0 : -1;
+    });
+    panels.forEach((p) => (p.hidden = p.dataset.panel !== id));
+  };
+
+  tabs.forEach((t, i) => {
+    t.addEventListener("click", () => activar(t.dataset.tab!));
+    t.addEventListener("keydown", (e) => {
+      if (e.key !== "ArrowRight" && e.key !== "ArrowLeft") return;
+      const paso = e.key === "ArrowRight" ? 1 : -1;
+      const siguiente = tabs[(i + paso + tabs.length) % tabs.length];
+      siguiente.focus();
+      activar(siguiente.dataset.tab!);
+    });
+  });
+</script>
