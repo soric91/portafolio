@@ -2,8 +2,10 @@
 // Vista previa animada para tarjetas de proyecto sin foto todavía.
 // Cada variante representa el tipo de sistema con CSS puro (sin JS).
 // Cuando el proyecto tenga captura real, esta animación se reemplaza sola.
+import type { Anim } from "../data/proyectos";
+
 interface Props {
-  variant: "energia" | "chat" | "inventario" | "solar" | "catalogo" | "datos";
+  variant: Anim;
 }
 
 const { variant } = Astro.props;
@@ -94,6 +96,57 @@ const { variant } = Astro.props;
           points="0,100 40,92 80,95 120,75 160,82 200,62 240,70 280,50 320,55"
           fill="none"
         />
+      </svg>
+    )
+  }
+
+  {
+    variant === "factura" && (
+      <div class="factura">
+        <p class="fx-head">FACTURA-E · XML UBL</p>
+        {["ACETAMINOFÉN 500MG", "IBUPROFENO 400MG", "LORATADINA 10MG"].map((item, i) => (
+          <p class="fx-linea" style={`--d:${(i * 0.7).toFixed(1)}s`}>
+            <span>{item}</span>
+            <b>LOTE ✓</b>
+          </p>
+        ))}
+        <p class="fx-cuadre">CUADRE A·B·C ✓</p>
+      </div>
+    )
+  }
+
+  {
+    variant === "ocr" && (
+      <div class="ocr">
+        <div class="display-lcd">
+          <span class="lectura">230.4</span>
+          <span class="unidad">V AC</span>
+          <i class="esquina tl" />
+          <i class="esquina tr" />
+          <i class="esquina bl" />
+          <i class="esquina br" />
+          <i class="scan" />
+        </div>
+        <p class="ocr-out">→ COM-F-05 · CELDA D14 = 230.4</p>
+      </div>
+    )
+  }
+
+  {
+    variant === "forecast" && (
+      <svg class="forecast" viewBox="0 0 320 120" preserveAspectRatio="none">
+        <line class="cero" x1="0" y1="70" x2="320" y2="70" />
+        <polyline
+          class="historia"
+          points="0,40 20,42 40,46 60,58 80,82 100,98 120,96 140,80 160,52 180,38"
+          fill="none"
+        />
+        <polyline
+          class="prediccion"
+          points="180,38 200,40 220,46 240,60 260,84 280,100 300,95 320,78"
+          fill="none"
+        />
+        <line class="ahora" x1="180" y1="6" x2="180" y2="114" />
       </svg>
     )
   }
@@ -366,8 +419,176 @@ const { variant } = Astro.props;
     100% { stroke-dashoffset: -600; }
   }
 
+  /* ---------- factura: líneas leídas y cuadradas ---------- */
+  .factura {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    width: 64%;
+    margin-top: 22px;
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.06em;
+  }
+
+  .factura p { margin: 0; }
+
+  .fx-head { color: var(--color-fog); }
+
+  .fx-linea {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+    padding: 5px 8px;
+    border-radius: 3px;
+    border: 1px solid color-mix(in srgb, var(--color-fog) 25%, transparent);
+    color: var(--color-paper);
+    animation: leer 5s ease var(--d) infinite;
+  }
+
+  .fx-linea b {
+    font-weight: 600;
+    color: var(--color-teal);
+    opacity: 0;
+    animation: aprobar 5s ease var(--d) infinite;
+  }
+
+  .fx-cuadre {
+    align-self: flex-end;
+    padding: 3px 8px;
+    border-radius: 3px;
+    color: var(--color-ink);
+    background: var(--color-amber);
+    font-weight: 600;
+    opacity: 0;
+    animation: aprobar 5s ease 2.2s infinite;
+  }
+
+  @keyframes leer {
+    0%, 8% { border-color: color-mix(in srgb, var(--color-fog) 25%, transparent); }
+    18%, 85% { border-color: color-mix(in srgb, var(--color-teal) 55%, transparent); }
+    100% { border-color: color-mix(in srgb, var(--color-fog) 25%, transparent); }
+  }
+
+  @keyframes aprobar {
+    0%, 15% { opacity: 0; }
+    25%, 85% { opacity: 1; }
+    95%, 100% { opacity: 0; }
+  }
+
+  /* ---------- ocr: lectura del multímetro ---------- */
+  .ocr {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .display-lcd {
+    position: relative;
+    display: flex;
+    align-items: baseline;
+    gap: 8px;
+    padding: 12px 20px;
+    border-radius: 4px;
+    background: color-mix(in srgb, var(--color-teal) 8%, #0a0f19);
+    overflow: hidden;
+  }
+
+  .lectura {
+    font-family: var(--font-mono);
+    font-size: 30px;
+    font-weight: 600;
+    color: var(--color-paper);
+    letter-spacing: 0.04em;
+  }
+
+  .unidad {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--color-fog);
+  }
+
+  .esquina {
+    position: absolute;
+    width: 10px;
+    height: 10px;
+    border-color: var(--color-amber);
+    border-style: solid;
+    border-width: 0;
+  }
+  .esquina.tl { top: 3px; left: 3px; border-top-width: 2px; border-left-width: 2px; }
+  .esquina.tr { top: 3px; right: 3px; border-top-width: 2px; border-right-width: 2px; }
+  .esquina.bl { bottom: 3px; left: 3px; border-bottom-width: 2px; border-left-width: 2px; }
+  .esquina.br { bottom: 3px; right: 3px; border-bottom-width: 2px; border-right-width: 2px; }
+
+  .scan {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    height: 2px;
+    background: var(--color-teal);
+    box-shadow: 0 0 10px var(--color-teal);
+    animation: escanear 2.4s ease-in-out infinite;
+  }
+
+  @keyframes escanear {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(58px); }
+  }
+
+  .ocr-out {
+    margin: 0;
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.06em;
+    color: var(--color-teal);
+    animation: aprobar 4.8s ease 0.6s infinite;
+  }
+
+  /* ---------- forecast: histórico + predicción ---------- */
+  .forecast {
+    width: 80%;
+    height: 64%;
+    overflow: visible;
+  }
+
+  .forecast .cero {
+    stroke: color-mix(in srgb, var(--color-fog) 35%, transparent);
+    stroke-width: 1;
+  }
+
+  .forecast .historia {
+    stroke: var(--color-teal);
+    stroke-width: 2;
+    stroke-linejoin: round;
+  }
+
+  .forecast .prediccion {
+    stroke: var(--color-amber);
+    stroke-width: 2;
+    stroke-dasharray: 6 5;
+    stroke-linejoin: round;
+    animation: predecir 1.2s linear infinite;
+  }
+
+  .forecast .ahora {
+    stroke: color-mix(in srgb, var(--color-paper) 40%, transparent);
+    stroke-width: 1;
+    stroke-dasharray: 2 4;
+  }
+
+  @keyframes predecir {
+    to { stroke-dashoffset: -22; }
+  }
+
   /* ---------- movimiento reducido: cuadro estático ---------- */
   @media (prefers-reduced-motion: reduce) {
+    .fx-linea { animation: none; }
+    .fx-linea b, .fx-cuadre, .ocr-out { animation: none; opacity: 1; }
+    .scan { animation: none; opacity: 0; }
+    .forecast .prediccion { animation: none; }
     .bar { animation: none; }
     .burbuja { animation: none; opacity: 1; }
     .burbuja.escribiendo i { animation: none; opacity: 0.6; }

@@ -32,9 +32,12 @@ body {
   background: var(--color-ink);
   /* rejilla técnica sutil en toda la página */
   background-image:
+    radial-gradient(900px 520px at 85% -120px, rgba(62, 207, 184, 0.14), transparent 70%),
+    radial-gradient(700px 420px at -10% 380px, rgba(255, 178, 36, 0.07), transparent 70%),
     linear-gradient(rgba(62, 207, 184, 0.035) 1px, transparent 1px),
     linear-gradient(90deg, rgba(62, 207, 184, 0.035) 1px, transparent 1px);
-  background-size: 48px 48px;
+  background-size: 100% 100%, 100% 100%, 48px 48px, 48px 48px;
+  background-repeat: no-repeat, no-repeat, repeat, repeat;
   -webkit-font-smoothing: antialiased;
 }
 
@@ -61,6 +64,17 @@ body {
   letter-spacing: 0.16em;
   text-transform: uppercase;
   color: var(--color-teal);
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+/* línea guía tras la etiqueta de sección */
+.tag::after {
+  content: "";
+  flex: 0 1 120px;
+  height: 1px;
+  background: linear-gradient(90deg, rgba(62, 207, 184, 0.5), transparent);
 }
 
 /* Relleno rayado para fotos pendientes (proyectos / operador) */

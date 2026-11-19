@@ -1,126 +1,90 @@
 ---
 import { SITE, repoUrl } from "../config";
+import { CATEGORIAS, proyectos, laboratorio, type Categoria } from "../data/proyectos";
 import ProyectoAnim from "./ProyectoAnim.astro";
 
-// Prefijo del despliegue (ej. "/portafolio" en GitHub Pages) — se antepone
-// solo a las rutas de /public; escribe `img` siempre como "/proyectos/...".
+// Prefijo del despliegue (ej. "/portafolio" en GitHub Pages)
 const base = import.meta.env.BASE_URL.replace(/\/$/, "");
 
-// ============================================================
-// CADA PROYECTO:
-//  - anim: animación de vista previa mientras no hay foto.
-//          Opciones: "energia" | "chat" | "inventario" | "solar"
-//                    | "catalogo" | "datos"
-//  - img:  ruta de la captura real dentro de /public
-//          (ej. "/proyectos/monitoreo.webp"). Cuando la pongas,
-//          reemplaza a la animación. Guarda las imágenes en
-//          public/proyectos/ (ideal: 1200×675, .webp).
-//  - repo: nombre del repositorio en tu GitHub (se une con SITE.github).
-//          Deja "" si el código es privado y el botón no aparece.
-//  - demo: URL en vivo, opcional.
-// ============================================================
-const proyectos = [
-  {
-    code: "PRJ-01",
-    tipo: "IOT · TIEMPO REAL",
-    nombre: "Monitoreo energético industrial",
-    desc: "Sistema de adquisición de datos de medidores eléctricos por Modbus RTU/TCP, transporte con MQTT y visualización en tiempo real para monitoreo de consumo en planta.",
-    stack: ["Python", "Modbus", "MQTT", "Grafana"],
-    anim: "energia",
-    img: "",
-    repo: "",
-    demo: "",
-  },
-  {
-    code: "PRJ-02",
-    tipo: "IA · AUTOMATIZACIÓN",
-    nombre: "Bot de citas por WhatsApp",
-    desc: "Asistente conversacional para spas y barberías: agenda citas, gestiona servicios y cobra depósitos con QR. FastAPI, Redis para deduplicación y LLM para el diálogo.",
-    stack: ["FastAPI", "WhatsApp API", "Redis", "LLM"],
-    anim: "chat",
-    img: "",
-    repo: "",
-    demo: "",
-  },
-  {
-    code: "PRJ-03",
-    tipo: "SAAS · B2B",
-    nombre: "StockControl — SaaS de inventario",
-    desc: "Plataforma de gestión de inventario industrial para el mercado colombiano: multiusuario, reportes y catálogo de productos por categorías.",
-    stack: ["FastAPI", "PostgreSQL", "React", "Docker"],
-    anim: "inventario",
-    img: "",
-    repo: "",
-    demo: "",
-  },
-  {
-    code: "PRJ-04",
-    tipo: "PWA · CAMPO",
-    nombre: "Reportes de mantenimiento solar",
-    desc: "Plataforma para técnicos fotovoltaicos en campo: PWA offline-first con optimización de imágenes en el navegador, sincronización y panel administrativo.",
-    stack: ["React", "PWA", "IndexedDB", "FastAPI"],
-    anim: "solar",
-    img: "",
-    repo: "",
-    demo: "",
-  },
-  {
-    code: "PRJ-05",
-    tipo: "E-COMMERCE LIGERO",
-    nombre: "Catálogo con pedidos por WhatsApp",
-    desc: "Catálogo web reutilizable para negocios de ropa: carrito con estado global, envío de pedidos y cierre de venta por enlace directo a WhatsApp.",
-    stack: ["Astro", "Tailwind", "React islands"],
-    anim: "catalogo",
-    img: "",
-    repo: "",
-    demo: "",
-  },
-  {
-    code: "PRJ-06",
-    tipo: "DATOS · ANALÍTICA",
-    nombre: "Dashboards y reportes interactivos",
-    desc: "Reportes HTML interactivos y compartibles a partir de Excel/CSV, con análisis automático y gráficas dinámicas para clientes no técnicos.",
-    stack: ["Python", "Plotly", "Flask"],
-    anim: "datos",
-    img: "",
-    repo: "",
-    demo: "",
-  },
-] as const;
+const filtros = [
+  { id: "todos", label: "Todos", total: proyectos.length },
+  ...(Object.entries(CATEGORIAS) as [Categoria, string][]).map(([id, label]) => ({
+    id,
+    label,
+    total: proyectos.filter((p) => p.cat === id).length,
+  })),
+].filter((f) => f.total > 0);
 ---
 
 <section id="proyectos" class="mx-auto max-w-6xl px-5 py-20 md:py-24">
-  <p class="tag reveal">[ 02 / PROYECTOS ]</p>
-  <h2 class="display reveal mt-3 max-w-2xl text-4xl [font-stretch:122%] md:text-[40px]">
-    Proyectos personales
-  </h2>
-  <p class="reveal mt-5 max-w-xl text-fog">
-    Sistemas que construyo por cuenta propia para resolver problemas reales.
-    El código está en GitHub.
-  </p>
+  <p class="tag reveal">[ 03 / PROYECTOS ]</p>
+  <div class="mt-3 flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
+    <div>
+      <h2 class="display reveal max-w-2xl text-4xl [font-stretch:122%] md:text-[40px]">
+        Más sistemas en marcha
+      </h2>
+      <p class="reveal mt-5 max-w-xl text-fog">
+        Software para droguerías, técnicos en campo, empresas solares y
+        negocios que venden por WhatsApp. Algunos ya los usan clientes todos
+        los días.
+      </p>
+    </div>
+
+    <div class="reveal flex flex-wrap gap-2" role="group" aria-label="Filtrar proyectos por categoría">
+      {
+        filtros.map((f, i) => (
+          <button
+            type="button"
+            class="chip"
+            data-filtro={f.id}
+            aria-pressed={i === 0 ? "true" : "false"}
+          >
+            {f.label}
+            <span class="font-mono text-[10px] opacity-70">{f.total}</span>
+          </button>
+        ))
+      }
+    </div>
+  </div>
 
   <div class="mt-12 grid gap-5 md:grid-cols-2 xl:grid-cols-3">
     {
       proyectos.map((p) => (
-        <article class="reveal flex flex-col overflow-hidden rounded-md border border-paper/10 bg-panel/60 transition-colors hover:border-amber/50">
-          <header class="flex items-center justify-between border-b border-paper/10 px-5 py-3 font-mono text-[11px] tracking-[0.12em] text-fog">
+        <article
+          data-cat={p.cat}
+          class="tarjeta reveal flex flex-col overflow-hidden rounded-md border border-paper/10 bg-panel/60"
+        >
+          <header class="flex items-center justify-between gap-3 border-b border-paper/10 px-5 py-3 font-mono text-[11px] tracking-[0.12em] text-fog">
             <span>{p.code}</span>
-            <span class="text-teal">{p.tipo}</span>
+            <span class="truncate text-teal">{p.tipo}</span>
           </header>
 
-          {p.img ? (
-            <img
-              src={`${base}${p.img}`}
-              alt={`Captura del proyecto ${p.nombre}`}
-              loading="lazy"
-              decoding="async"
-              width="1200"
-              height="675"
-              class="aspect-video w-full border-b border-paper/10 object-cover"
-            />
-          ) : (
-            <ProyectoAnim variant={p.anim} />
-          )}
+          <div class="relative">
+            {p.img ? (
+              <img
+                src={`${base}${p.img}`}
+                alt={`Captura del proyecto ${p.nombre}`}
+                loading="lazy"
+                decoding="async"
+                width="1600"
+                height="900"
+                class="aspect-video w-full border-b border-paper/10 object-cover"
+              />
+            ) : (
+              <ProyectoAnim variant={p.anim} />
+            )}
+            {p.estado && (
+              <span
+                class:list={[
+                  "estado absolute top-3 left-3 rounded-[3px] px-2 py-0.5 font-mono text-[10px] font-semibold tracking-[0.12em]",
+                  p.estado === "PROTOTIPO" ? "is-proto" : "is-live",
+                ]}
+              >
+                {p.estado !== "PROTOTIPO" && "● "}
+                {p.estado}
+              </span>
+            )}
+          </div>
 
           <div class="flex flex-1 flex-col gap-3 px-5 pt-5 pb-4">
             <h3 class="font-display text-[19px] leading-tight font-bold [font-stretch:115%]">
@@ -136,33 +100,50 @@ const proyectos = [
             </ul>
           </div>
 
-          {(p.repo || p.demo) && (
-            <footer class="flex items-center gap-5 border-t border-paper/10 px-5 py-3 font-mono text-[11px] tracking-[0.12em]">
-              {p.repo && (
-                <a
-                  href={repoUrl(p.repo)}
-                  target="_blank"
-                  rel="noopener"
-                  class="text-teal transition-colors hover:text-amber"
-                >
-                  CÓDIGO ↗
-                </a>
-              )}
-              {p.demo && (
-                <a
-                  href={p.demo}
-                  target="_blank"
-                  rel="noopener"
-                  class="text-amber transition-colors hover:text-paper"
-                >
-                  DEMO ↗
-                </a>
-              )}
-            </footer>
-          )}
+          <footer class="flex items-center gap-5 border-t border-paper/10 px-5 py-3 font-mono text-[11px] tracking-[0.12em]">
+            {p.repo && (
+              <a
+                href={repoUrl(p.repo)}
+                target="_blank"
+                rel="noopener"
+                class="text-teal transition-colors hover:text-amber"
+              >
+                CÓDIGO ↗
+              </a>
+            )}
+            {p.demo && (
+              <a
+                href={p.demo}
+                target="_blank"
+                rel="noopener"
+                class="text-amber transition-colors hover:text-paper"
+              >
+                DEMO ↗
+              </a>
+            )}
+            {!p.repo && !p.demo && (
+              <span class="text-fog">CÓDIGO PRIVADO · DEMO A PEDIDO</span>
+            )}
+          </footer>
         </article>
       ))
     }
+  </div>
+
+  <!-- Laboratorio: herramientas pequeñas -->
+  <div class="reveal mt-16">
+    <p class="font-mono text-[11px] tracking-[0.14em] text-amber">LABORATORIO / HERRAMIENTAS PROPIAS</p>
+    <ul class="lab mt-4 grid overflow-hidden rounded-md border border-paper/10 sm:grid-cols-2">
+      {
+        laboratorio.map((l) => (
+          <li class="flex flex-col gap-1 bg-panel/40 px-5 py-4">
+            <span class="font-display text-[16px] font-bold [font-stretch:115%]">{l.nombre}</span>
+            <span class="text-sm text-fog">{l.desc}</span>
+            <span class="font-mono text-[11px] tracking-[0.04em] text-teal">{l.stack}</span>
+          </li>
+        ))
+      }
+    </ul>
   </div>
 
   <p class="reveal mt-8 font-mono text-xs tracking-[0.08em] text-fog">
@@ -177,3 +158,88 @@ const proyectos = [
     </a>
   </p>
 </section>
+
+<style>
+  .chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 14px;
+    border-radius: 999px;
+    border: 1px solid color-mix(in srgb, var(--color-paper) 14%, transparent);
+    font-family: var(--font-mono);
+    font-size: 12px;
+    letter-spacing: 0.06em;
+    color: var(--color-fog);
+    transition: color 0.2s, border-color 0.2s, background 0.2s;
+    cursor: pointer;
+  }
+  .chip:hover {
+    color: var(--color-paper);
+    border-color: color-mix(in srgb, var(--color-teal) 50%, transparent);
+  }
+  .chip[aria-pressed="true"] {
+    color: var(--color-ink);
+    background: var(--color-teal);
+    border-color: var(--color-teal);
+  }
+
+  .tarjeta {
+    transition: border-color 0.25s ease, transform 0.25s ease, box-shadow 0.25s ease, opacity 0.6s ease;
+  }
+  .tarjeta:hover {
+    border-color: color-mix(in srgb, var(--color-amber) 50%, transparent);
+    transform: translateY(-3px);
+    box-shadow: 0 18px 40px -24px rgba(255, 178, 36, 0.35);
+  }
+  .tarjeta[hidden] {
+    display: none;
+  }
+
+  /* separadores de la rejilla del laboratorio: 1 columna en móvil, 2 en sm+ */
+  .lab {
+    gap: 1px;
+    background: color-mix(in srgb, var(--color-paper) 10%, transparent);
+  }
+  .lab li {
+    background: var(--color-ink);
+  }
+
+  .estado {
+    backdrop-filter: blur(6px);
+    background: color-mix(in srgb, var(--color-ink) 80%, transparent);
+  }
+  .estado.is-live {
+    color: var(--color-teal);
+    border: 1px solid color-mix(in srgb, var(--color-teal) 45%, transparent);
+  }
+  .estado.is-proto {
+    color: var(--color-amber);
+    border: 1px solid color-mix(in srgb, var(--color-amber) 45%, transparent);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .tarjeta,
+    .tarjeta:hover {
+      transition: none;
+      transform: none;
+    }
+  }
+</style>
+
+<script>
+  const chips = document.querySelectorAll<HTMLButtonElement>("#proyectos [data-filtro]");
+  const tarjetas = document.querySelectorAll<HTMLElement>("#proyectos [data-cat]");
+
+  chips.forEach((chip) =>
+    chip.addEventListener("click", () => {
+      const filtro = chip.dataset.filtro;
+      chips.forEach((c) => c.setAttribute("aria-pressed", String(c === chip)));
+      tarjetas.forEach((t) => {
+        t.hidden = filtro !== "todos" && t.dataset.cat !== filtro;
+        // las tarjetas que reaparecen no deben quedar invisibles por el reveal
+        t.classList.add("is-visible");
+      });
+    })
+  );
+</script>
